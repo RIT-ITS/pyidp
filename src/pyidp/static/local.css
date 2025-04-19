@@ -1,0 +1,14 @@
+#navlogo:before {
+    content: "PyIDP";
+    background-image: url(python-logo-only.svg);
+    font-size: 2em;
+    line-height: 1em;
+    font-weight: bold;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 0px 0px 10px 50px;
+}
+
+.no-flex-wrap {
+    flex-wrap: nowrap;
+}

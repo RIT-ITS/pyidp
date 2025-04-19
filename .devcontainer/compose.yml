@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "8000"
+    volumes:
+      - ../..:/workspaces:cached
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    environment:
+      SECRET_KEY: ${_PYIDP_SECRET_KEY}
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.certificat.rule=Host(`pyidp.localtest.me`)"
+      - "traefik.http.routers.certificat.tls=true"
+      - "traefik.http.services.certificat.loadbalancer.server.port=8000"
+
+networks:
+  proxy:
+    name: traefik.proxy
+    external: true

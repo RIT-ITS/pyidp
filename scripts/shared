@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+HERE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+ROOT="$(realpath "${HERE}"/../)"
+SRC_PATH="${ROOT}/src"
+LIB_PATH="${SRC_PATH}/pyidp"
+VENV_PATH="${ROOT}/.venv"
+VENV_PYTEST="${VENV_PATH}/bin/pytest"
+VENV_PYTHON="${VENV_PATH}/bin/python3"
+ACTIVATE_VENV="${VENV_PATH}/bin/activate"

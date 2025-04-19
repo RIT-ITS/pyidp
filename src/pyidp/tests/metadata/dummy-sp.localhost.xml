@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://acme.edu/saml2/">
+  <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDBTCCAe2gAwIBAgIUZ5FClPZ+lln+GZGfZyraIJ+sx1owDQYJKoZIhvcNAQELBQAwEjEQMA4GA1UEAwwHdGVzdHJlcTAeFw0yNTA0MTQyMjExNTdaFw0yNjA0MTQyMjExNTdaMBIxEDAOBgNVBAMMB3Rlc3RyZXEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCVa8uK85SxJjyIJyK+XN4j/fBTF3c4EsmSCB12ZgSjVJj43ABRKYqbWUUpXMotHBJj0TjdPSlRHrYFx75VIbAH/6PJZw0OeexcgxqZ2XlC0sV0A9Q8EmpluNInaGdTej3/vlRi8jEyLO65btS4bHGeXzLWejCkS3wRi/vM0+fm4ObmE/ZC+pdLwcj6o8mfalE3OITIgexmVx+a/+ixafKTcrGKG4pCd5UhDhDApJTFBGRi0Es5RU09m+Yv8NM91ltrv1urMUg/l7ziW8VAOlOTJpTty6zOVfBynxvrdfqI90RMii85KcwSv9+nbbZ/T5rm/q5cyyISe8uzJ+6QJMYjAgMBAAGjUzBRMB0GA1UdDgQWBBRTsqpyhK/sZuZFbTPdhc+Gt5FYBjAfBgNVHSMEGDAWgBRTsqpyhK/sZuZFbTPdhc+Gt5FYBjAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQBoSJmBA1S4zm1L8aJ1D5Devi+DZXVmjx+9HNetm8Kfn9FYBbBNBkuL9faEhgiiGZyNK61DciLhhyNZoc0g7fleoQMsaTI28qsbqAy3UCALwhBbhGnHzLdPGzDWvrldT/IGTRSazHc//zCFc2Mtml5KkobHbqO3mm78j4h1NAJoKYxp0qHjVmdBAWZfe85gLNf0HaJxaDgmZhQvL9cMpKJNHuUcMSbA0ZAaMcW+psa3qi2tmuU4iC7z5ACpUleNyuMB6OkGTmjxk5HwalNWcSRuF/EeOhO9RttZNTWWzrYNdcRubFf9fh7ynxOrh76M18/aRCnZ/pNfxh1QYfMdWhgO</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDBTCCAe2gAwIBAgIUZ5FClPZ+lln+GZGfZyraIJ+sx1owDQYJKoZIhvcNAQELBQAwEjEQMA4GA1UEAwwHdGVzdHJlcTAeFw0yNTA0MTQyMjExNTdaFw0yNjA0MTQyMjExNTdaMBIxEDAOBgNVBAMMB3Rlc3RyZXEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCVa8uK85SxJjyIJyK+XN4j/fBTF3c4EsmSCB12ZgSjVJj43ABRKYqbWUUpXMotHBJj0TjdPSlRHrYFx75VIbAH/6PJZw0OeexcgxqZ2XlC0sV0A9Q8EmpluNInaGdTej3/vlRi8jEyLO65btS4bHGeXzLWejCkS3wRi/vM0+fm4ObmE/ZC+pdLwcj6o8mfalE3OITIgexmVx+a/+ixafKTcrGKG4pCd5UhDhDApJTFBGRi0Es5RU09m+Yv8NM91ltrv1urMUg/l7ziW8VAOlOTJpTty6zOVfBynxvrdfqI90RMii85KcwSv9+nbbZ/T5rm/q5cyyISe8uzJ+6QJMYjAgMBAAGjUzBRMB0GA1UdDgQWBBRTsqpyhK/sZuZFbTPdhc+Gt5FYBjAfBgNVHSMEGDAWgBRTsqpyhK/sZuZFbTPdhc+Gt5FYBjAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQBoSJmBA1S4zm1L8aJ1D5Devi+DZXVmjx+9HNetm8Kfn9FYBbBNBkuL9faEhgiiGZyNK61DciLhhyNZoc0g7fleoQMsaTI28qsbqAy3UCALwhBbhGnHzLdPGzDWvrldT/IGTRSazHc//zCFc2Mtml5KkobHbqO3mm78j4h1NAJoKYxp0qHjVmdBAWZfe85gLNf0HaJxaDgmZhQvL9cMpKJNHuUcMSbA0ZAaMcW+psa3qi2tmuU4iC7z5ACpUleNyuMB6OkGTmjxk5HwalNWcSRuF/EeOhO9RttZNTWWzrYNdcRubFf9fh7ynxOrh76M18/aRCnZ/pNfxh1QYfMdWhgO</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://acme.edu/saml2/acs-post" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://acme.edu/saml2/acs-redirect" index="2"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- The keys in this service do not exist anymore. This is used to test error states. -->
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://acme2.edu/saml2/">
+  <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDFTCCAf2gAwIBAgIUDJy5HHDdORaYcWbdORGYgMXiUhwwDQYJKoZIhvcNAQELBQAwGjEYMBYGA1UEAwwPdGVzdHNwLmFjbWUuZWR1MB4XDTI1MDQxNTE3MzIxOFoXDTI2MDQxNTE3MzIxOFowGjEYMBYGA1UEAwwPdGVzdHNwLmFjbWUuZWR1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt8+Fp9UBFSygPNJEHiWhKFmDAz3aO9kC14qO/WwVYtyHJ72ym2CECVGnVQ7CEzo3JAgJV4TPmBWK0AuuU5IcUP7xe/9VREqNXaNfWHxO+LLRI/9fv2hfhoC6zM0sTzssCVg7wFNUm7jUJ4ti59iwjFTolQ4Oo0pZJix/cX6BHCAdRJK/XSvA01ycVVrSZn9mHDRju7iVk309B2plhY3Y454cDXtxkz/qKgwbcqE0QiOepI05K+N/wOJTqLR5+lH3g/SAiE7X/LpClbfjwT5XrbSF4yIhLdbPt6ToqoPRwX11ZwQisJMnROy3X5BIZe7jx2kaTcgRe8DUgKtEBLif+QIDAQABo1MwUTAdBgNVHQ4EFgQUSss/h8ExtrBxgUXFGwZ2hqF8pqEwHwYDVR0jBBgwFoAUSss/h8ExtrBxgUXFGwZ2hqF8pqEwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAVimujQOQwehZGHDwa7ry5Dhv/FkruhsHEz8q0WXb3oH9vSd4fo2Y0GmaRZcaASlRDXVxYaHp5f7qXXCqvCu3TaYAGBIGXADCBCsw6UYpLZ8YXhw9Fnj+5yp1L6TgRFCz4X0RU4koifNRsJJPJV2atG+l/A/V9YxMx1uUjXWFFiDrV7YwNRq7ivsgnEEgi+b0YeBQc1lyiDDvXw1PC4a/ZDNXVHdfDFHayOKFz6bWsU05ZuWIBPRAz9BMua/HDoq0LYcJGwC/RP3UCCk2j2bFYha8ciUx8Gd9NnLsT8Qa5q11IyPXD5dKkyEiV4M6/DIKBAcAL7VTldQld3+kX2qCMQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDFTCCAf2gAwIBAgIUDJy5HHDdORaYcWbdORGYgMXiUhwwDQYJKoZIhvcNAQELBQAwGjEYMBYGA1UEAwwPdGVzdHNwLmFjbWUuZWR1MB4XDTI1MDQxNTE3MzIxOFoXDTI2MDQxNTE3MzIxOFowGjEYMBYGA1UEAwwPdGVzdHNwLmFjbWUuZWR1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt8+Fp9UBFSygPNJEHiWhKFmDAz3aO9kC14qO/WwVYtyHJ72ym2CECVGnVQ7CEzo3JAgJV4TPmBWK0AuuU5IcUP7xe/9VREqNXaNfWHxO+LLRI/9fv2hfhoC6zM0sTzssCVg7wFNUm7jUJ4ti59iwjFTolQ4Oo0pZJix/cX6BHCAdRJK/XSvA01ycVVrSZn9mHDRju7iVk309B2plhY3Y454cDXtxkz/qKgwbcqE0QiOepI05K+N/wOJTqLR5+lH3g/SAiE7X/LpClbfjwT5XrbSF4yIhLdbPt6ToqoPRwX11ZwQisJMnROy3X5BIZe7jx2kaTcgRe8DUgKtEBLif+QIDAQABo1MwUTAdBgNVHQ4EFgQUSss/h8ExtrBxgUXFGwZ2hqF8pqEwHwYDVR0jBBgwFoAUSss/h8ExtrBxgUXFGwZ2hqF8pqEwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAVimujQOQwehZGHDwa7ry5Dhv/FkruhsHEz8q0WXb3oH9vSd4fo2Y0GmaRZcaASlRDXVxYaHp5f7qXXCqvCu3TaYAGBIGXADCBCsw6UYpLZ8YXhw9Fnj+5yp1L6TgRFCz4X0RU4koifNRsJJPJV2atG+l/A/V9YxMx1uUjXWFFiDrV7YwNRq7ivsgnEEgi+b0YeBQc1lyiDDvXw1PC4a/ZDNXVHdfDFHayOKFz6bWsU05ZuWIBPRAz9BMua/HDoq0LYcJGwC/RP3UCCk2j2bFYha8ciUx8Gd9NnLsT8Qa5q11IyPXD5dKkyEiV4M6/DIKBAcAL7VTldQld3+kX2qCMQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://acme2.edu/saml2/acs" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>

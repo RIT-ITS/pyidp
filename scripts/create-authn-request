@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+AUTHN_XML=$(cat <<EOF
+  <samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="$(cat /proc/sys/kernel/random/uuid)" IssueInstant="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" Version="2.0">
+    <saml:Issuer>https://dummy-sp.localhost/saml2</saml:Issuer>
+  </samlp:AuthnRequest>
+EOF
+)
+
+function deflate {
+    # shellcheck disable=SC2002
+    echo "${1}" | gzip -c | tail -c +11
+}
+
+urlencode() {
+  LC_ALL=C awk -- '
+    BEGIN {
+      for (i = 1; i <= 255; i++) hex[sprintf("%c", i)] = sprintf("%%%02X", i)
+    }
+    function urlencode(s,  c,i,r,l) {
+      l = length(s)
+      for (i = 1; i <= l; i++) {
+        c = substr(s, i, 1)
+        r = r "" (c ~ /^[-._~0-9a-zA-Z]$/ ? c : hex[c])
+      }
+      return r
+    }
+    BEGIN {
+      for (i = 1; i < ARGC; i++)
+        print urlencode(ARGV[i])
+    }' "$@"
+}
+
+deflated_file="$(mktemp)"
+deflate "${AUTHN_XML}" > "${deflated_file}"
+saml_request="$(urlencode "$(base64 "${deflated_file}")")"
+
+echo -e "XML:\n${AUTHN_XML}\n"
+
+echo -e "Unsigned Request:\nhttps://pyidp.localtest.me/saml2/redirect?SAMLRequest=${saml_request}"

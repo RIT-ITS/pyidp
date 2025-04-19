@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Log In</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='rit.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='local.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    </head>
+    <body>
+
+    <div id="navigation-row" class="row center">
+        <div id="navigation" class="row">
+            <div class="container row">                
+                <div id="navlogo"></div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    {% block content %}{% endblock %}
+
+    <script>
+        // adds label attribute to table data for responsive tables
+        document.querySelectorAll("table.collapsible").forEach((table) => {
+        const thEls = table.querySelectorAll("thead th");
+        const tdLabels = Array.from(thEls).map((el) => el.innerText);
+        table.querySelectorAll("tbody tr").forEach((tr) => {
+                Array.from(tr.children).forEach((td, ndx) => {
+                if (td.getAttribute("label")) return;
+
+                td.setAttribute("label", tdLabels[ndx])
+                });
+            });
+        });
+
+        (() => {
+            const el = document.querySelector('#navigation-row')
+
+            const observer = new IntersectionObserver( 
+                ([e]) => e.target.classList.toggle('is-sticky', e.intersectionRatio < 1),
+                {threshold: [1]}
+            );
+
+            observer.observe(el)
+        })();
+
+    </script>
+        
+     </body>
+</html>

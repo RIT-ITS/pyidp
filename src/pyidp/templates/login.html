@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-3">
+    <h3>Select Predefined Profile</h3>
+    <form action="{{ url_for('views.choose_profile', ticket=ticket )}}" method="post">
+        <table class="table collapsible">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Groups</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            {% for uid, profile in profiles.items() %}
+            <tr>
+                <td>
+                    <b class='bold'>{{ uid }}</b><br />
+                    {{ profile.givenName }} {{ profile.sn }}
+                </td>
+                <td>
+                    {{ profile.mail }}
+                </td>
+                <td>
+                    {% for group in profile.groups %}
+                    {{ group }}<br />
+                    {% endfor %}
+                </td>
+                <td class="row-button shrink-cell">
+                    <button type="submit" class="btn--primary btn--sm btn" value="{{ uid }}"
+                        name="chosenProfile">Select Profile</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+    <h3 class='mt-5'>Use Custom Profile</h3>
+    <form action="{{ url_for('views.choose_profile', ticket=ticket )}}" method="post">
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <label for="user" class="form-required">Username</label>
+                <input id="user" name="user" type="text" required="required" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-xs-12 col-md-4">
+                <label for="mail" class="form-required">Email</label>
+                <input id="mail" name="mail" type="email" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col p0 mt-2">
+                <label for="givenName" class="form-required">Name</label>
+                <div class="row">
+                    <div class="col col-xs-12 col-sm-6">
+                        <input id="givenName" name="givenName" type="text" placeholder="First name..."
+                            autocomplete="off" />
+                    </div>
+                    <div class="col col-xs-12 col-sm-6">
+                        <input id="sn" name="sn" type="text" placeholder="Last name..."
+                            autocomplete="off" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-lg-5 col-md-6 mt-3">
+            <div class="row">
+                <div class="col-lg-5 pl-0 py-0">
+                    <label>Groups</label>
+                    <label><input type="checkbox" name="groups" value="admin" /> admin</label>
+                    <label><input type="checkbox" name="groups" value="student" /> student</label>
+                    <label><input type="checkbox" name="groups" value="faculty" /> faculty</label>
+                    <label><input type="checkbox" name="groups" value="staff" /> staff</label>
+                    <div class="row no-flex-wrap"><input type="text" name="groups" placeholder="custom..." /></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn--primary mt-4" type="submit" name="customProfile">Log In With Profile</button>
+    </form>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+HERE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source "${HERE}/shared"
+
+[ ! -d "${VENV_PATH}" ] && { uv venv "${VENV_PATH}"; }
+cd "${SRC_PATH}" || exit
+uv sync --python-preference "only-system"
+echo "${SRC_PATH}" > "$(realpath "${VENV_PATH}"/lib/python*)/site-packages/local.pth"
