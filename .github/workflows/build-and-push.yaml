@@ -42,7 +42,7 @@ jobs:
           build-contexts: |
             src=./src
             dockerfiles=./docker/pyidp
-          tags: 
-            - ${{ github.ref_name }} 
-            - "latest"
+          tags: |
+            ${{ github.ref_name }}
+            latest
           
