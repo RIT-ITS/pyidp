@@ -39,7 +39,7 @@ jobs:
         with:
           push: true
           file: "./docker/pyidp.Dockerfile"
-          build_contexts:
+          build-contexts:
             - src="./src"
             - dockerfiles="./docker/pyidp"
           tags: 
