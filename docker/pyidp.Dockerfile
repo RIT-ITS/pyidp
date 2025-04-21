@@ -44,6 +44,8 @@ COPY --from=builder --chown=pyidp /code/requirements-frozen.txt /opt/pyidp/requi
 COPY --from=builder --chown=pyidp /code/dist/pyidp-*.whl /opt/pyidp/
     
 RUN chown pyidp /srv/www
+RUN mkdir -p /etc/pyidp && chown pyidp /etc/pyidp
+
 USER pyidp
 
 RUN python3 -m venv /srv/www/.venv && \
@@ -54,7 +56,6 @@ RUN python3 -m venv /srv/www/.venv && \
 
 # Overlay static configuration and runtime files
 COPY --from=dockerfiles --chown=pyidp /srv /srv/
-COPY --from=dockerfiles --chown=pyidp /etc /etc/
 
 ENTRYPOINT [ "/srv/www/entrypoint.sh" ]
 EXPOSE 80
