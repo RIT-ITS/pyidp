@@ -24,7 +24,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -44,5 +44,5 @@ jobs:
             dockerfiles=./docker/pyidp
           tags: |
             ${{ github.ref_name }}
-            latest
+            
           
