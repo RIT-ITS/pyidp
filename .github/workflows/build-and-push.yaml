@@ -37,10 +37,12 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
+          push: true
           file: "./docker/pyidp.Dockerfile"
           build_contexts:
             src: "./src"
             dockerfiles: "./docker/pyidp"
-          push: true
-          tags: [${{ github.ref_name }}, "latest"]
+          tags: 
+            - ${{ github.ref_name }} 
+            - "latest"
           
