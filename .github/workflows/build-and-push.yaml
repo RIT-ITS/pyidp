@@ -39,9 +39,9 @@ jobs:
         with:
           push: true
           file: "./docker/pyidp.Dockerfile"
-          build-contexts:
-            - src="./src"
-            - dockerfiles="./docker/pyidp"
+          build-contexts: |
+            src=./src
+            dockerfiles=./docker/pyidp
           tags: 
             - ${{ github.ref_name }} 
             - "latest"
