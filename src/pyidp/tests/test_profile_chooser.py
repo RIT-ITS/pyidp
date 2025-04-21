@@ -38,28 +38,35 @@ def _assert_profile_in_response(
 
 
 def test_choose_profile(
-    app_client: FlaskClient, authn_request_factory, saml_client: Saml2Client
+    authenticated_app_client: FlaskClient,
+    authn_request_factory,
+    saml_client: Saml2Client,
 ):
-    ticket = _get_ticket(app_client, authn_request_factory)
+    ticket = _get_ticket(authenticated_app_client, authn_request_factory)
 
-    profiles = app_client.application.config["PROFILES"]
+    profiles = authenticated_app_client.application.config["PROFILES"]
     first_profile_principal = list(profiles.keys())[0]
     first_profile = profiles[first_profile_principal]
 
-    resp = app_client.post(
+    resp = authenticated_app_client.post(
         "/login/profile?ticket=" + ticket,
         data={"chosenProfile": first_profile_principal},
     )
 
     _assert_profile_in_response(
-        resp, saml_client, app_client, {"user": first_profile_principal} | first_profile
+        resp,
+        saml_client,
+        authenticated_app_client,
+        {"user": first_profile_principal} | first_profile,
     )
 
 
 def test_provide_custom_profile(
-    app_client: FlaskClient, authn_request_factory, saml_client: Saml2Client
+    authenticated_app_client: FlaskClient,
+    authn_request_factory,
+    saml_client: Saml2Client,
 ):
-    ticket = _get_ticket(app_client, authn_request_factory)
+    ticket = _get_ticket(authenticated_app_client, authn_request_factory)
 
     profile = {
         "user": "testusr@acme.edu",
@@ -69,18 +76,20 @@ def test_provide_custom_profile(
         "groups": ["tester", "Domain Users"],
     }
 
-    resp = app_client.post(
+    resp = authenticated_app_client.post(
         "/login/profile?ticket=" + ticket,
         data=profile,
     )
 
-    _assert_profile_in_response(resp, saml_client, app_client, profile)
+    _assert_profile_in_response(resp, saml_client, authenticated_app_client, profile)
 
 
 def test_provide_custom_profile_no_groups(
-    app_client: FlaskClient, authn_request_factory, saml_client: Saml2Client
+    authenticated_app_client: FlaskClient,
+    authn_request_factory,
+    saml_client: Saml2Client,
 ):
-    ticket = _get_ticket(app_client, authn_request_factory)
+    ticket = _get_ticket(authenticated_app_client, authn_request_factory)
 
     profile = {
         "user": "testusr@acme.edu",
@@ -89,9 +98,11 @@ def test_provide_custom_profile_no_groups(
         "sn": "User",
     }
 
-    resp = app_client.post(
+    resp = authenticated_app_client.post(
         "/login/profile?ticket=" + ticket,
         data=profile,
     )
 
-    _assert_profile_in_response(resp, saml_client, app_client, {"groups": []} | profile)
+    _assert_profile_in_response(
+        resp, saml_client, authenticated_app_client, {"groups": []} | profile
+    )

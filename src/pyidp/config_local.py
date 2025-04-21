@@ -15,3 +15,11 @@ class Config(BaseConfig):
     @property
     def PUBLIC_KEY_FILE(self):
         return os.path.join(HERE, "tests/keys/reusable.crt")
+
+    @property
+    def SAML(self):
+        saml = super().SAML
+        saml["metadata"] = {
+            "local": [os.path.join(HERE, "tests/metadata/dummy-sp.localhost.xml")]
+        }
+        return saml

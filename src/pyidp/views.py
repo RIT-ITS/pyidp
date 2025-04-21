@@ -65,7 +65,7 @@ def parse_sso_req(params: MultiDict, binding: str) -> Tuple[AuthnRequest, AuthnS
     current_app.logger.debug(
         'sender "%s" relaystate "%s" binding "%s"',
         saml_request.sender(),
-        saml_request.relay_state,
+        params.get("RelayState"),  # Skip the pysaml2 relay state
         binding,
     )
     if not binding:
@@ -75,7 +75,7 @@ def parse_sso_req(params: MultiDict, binding: str) -> Tuple[AuthnRequest, AuthnS
         uuid.uuid4().hex,
         str(saml_request.message),
         saml_request.sender(),
-        saml_request.relay_state,
+        params.get("RelayState"),
     )
     state.save()
 
@@ -195,11 +195,13 @@ def choose_profile():
     acs_binding, acs = current_app.idp.pick_binding(
         "assertion_consumer_service", request=message
     )
+
     saml_resp = current_app.idp.apply_binding(
         acs_binding, str(resp), acs, state.relay_state, response=True
     )
 
     resp = None
+
     if acs_binding == BINDING_HTTP_REDIRECT:
         for key, value in saml_resp["headers"]:
             if key.lower() == "location":

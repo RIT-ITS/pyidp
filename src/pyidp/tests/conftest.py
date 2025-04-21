@@ -1,4 +1,5 @@
 import os
+import time
 from typing import Literal
 from urllib.parse import parse_qs, urlparse
 
@@ -28,6 +29,14 @@ def app_client(app):
 
 
 @pytest.fixture
+def authenticated_app_client(app_client):
+    with app_client.session_transaction() as session:
+        session["authenticated"] = time.time()
+
+    return app_client
+
+
+@pytest.fixture
 def saml_client():
     saml_client = Saml2Client(config=config_factory("sp", sp_conf.CONFIG))
     return saml_client
@@ -47,6 +56,7 @@ def authn_request_factory(saml_client: Saml2Client, app: IdPApp):
     ):
         binding = kwargs.pop("binding", BINDING_HTTP_REDIRECT)
         acs_binding = kwargs.pop("acs_binding", BINDING_HTTP_POST)
+        relay_state = kwargs.pop("relay_state", None)
         if not destination:
             destination = app.idp.config.endpoint("single_sign_on_service", binding)[0]
         _, req = saml_client.create_authn_request(
@@ -62,6 +72,7 @@ def authn_request_factory(saml_client: Saml2Client, app: IdPApp):
             sign=sign,
             sigalg=app.idp.signing_algorithm,
             backend=app.idp.sec.sec_backend,
+            relay_state=relay_state,
         )
 
         url = urlparse(dict(msg["headers"])["Location"])
@@ -71,38 +82,53 @@ def authn_request_factory(saml_client: Saml2Client, app: IdPApp):
 
 
 @pytest.fixture
-def authn_response_factory(app_client, saml_client, authn_request_factory):
+def authn_response_factory(
+    authenticated_app_client, saml_client, authn_request_factory
+):
     def wrapped(authn_request_args: dict = {}):
         params = authn_request_factory(
             binding=BINDING_HTTP_REDIRECT,
             **authn_request_args,
         )
-        resp = app_client.get(
+        resp = authenticated_app_client.get(
             "/saml2/redirect", query_string=params, follow_redirects=True
         )
         ticket = resp.request.args["ticket"]
 
-        profiles = app_client.application.config["PROFILES"]
+        profiles = authenticated_app_client.application.config["PROFILES"]
         first_profile_principal = list(profiles.keys())[0]
 
-        resp = app_client.post(
+        resp = authenticated_app_client.post(
             "/login/profile?ticket=" + ticket,
             data={"chosenProfile": first_profile_principal},
         )
+
+        relay_state = None
         if "location" in resp.headers:
             location = resp.headers["location"]
             destination = urlparse(location)
             query_params = parse_qs(destination.query)
+
             saml_resp = saml_client.parse_authn_request_response(
                 query_params["SAMLResponse"][0], BINDING_HTTP_REDIRECT
             )
+            try:
+                relay_state = query_params["RelayState"][0]
+            except:  # noqa: E722
+                pass
         else:
             soup = BeautifulSoup(resp.text, features="html.parser")
             saml_resp = saml_client.parse_authn_request_response(
                 soup.find_all(attrs={"name": "SAMLResponse"})[0].attrs["value"],
                 BINDING_HTTP_POST,
             )
-        return saml_resp
+            try:
+                relay_state = soup.find_all(attrs={"name": "RelayState"})[0].attrs[
+                    "value"
+                ]
+            except:  # noqa: E722
+                pass
+        return saml_resp, relay_state
 
     return wrapped
 

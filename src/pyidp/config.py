@@ -1,5 +1,7 @@
 import os
 
+import yaml
+
 from cachelib import FileSystemCache
 from saml2 import BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
 from saml2.saml import NAMEID_FORMAT_PERSISTENT
@@ -42,46 +44,52 @@ class Config:
 
     @property
     def PROFILES(self):
-        return {
-            "admin@acme.edu": {
-                "mail": "admin@mail.acme.edu",
-                "givenName": "Admin",
-                "sn": "User",
-                "groups": ["admin", "Domain Users"],
-            },
-            "staff@acme.edu": {
-                "mail": "staff@mail.acme.edu",
-                "givenName": "Staff",
-                "sn": "User",
-                "groups": [
-                    "staff",
-                    "its_staff",
-                    "its_staff_fte",
-                    "Domain Users",
-                ],
-            },
-            "faculty@acme.edu": {
-                "mail": "faculty@mail.acme.edu",
-                "givenName": "Faculty",
-                "sn": "User",
-                "groups": ["faculty", "faculty_fte", "Domain Users"],
-            },
-            "student@acme.edu": {
-                "mail": "student@mail.acme.edu",
-                "givenName": "Student",
-                "sn": "User",
-                "groups": ["student", "Domain Users"],
-            },
-        }
+        LOCAL_PROFILES_FILE = _("PROFILES_FILE", "/etc/pyidp/profiles.yaml")
+        if os.path.exists(LOCAL_PROFILES_FILE):
+            return yaml.safe_load(open(LOCAL_PROFILES_FILE))
+        else:
+            return {
+                "admin@acme.edu": {
+                    "mail": "admin@mail.acme.edu",
+                    "givenName": "Admin",
+                    "sn": "User",
+                    "groups": ["admin", "Domain Users"],
+                },
+                "staff@acme.edu": {
+                    "mail": "staff@mail.acme.edu",
+                    "givenName": "Staff",
+                    "sn": "User",
+                    "groups": [
+                        "staff",
+                        "its_staff",
+                        "its_staff_fte",
+                        "Domain Users",
+                    ],
+                },
+                "faculty@acme.edu": {
+                    "mail": "faculty@mail.acme.edu",
+                    "givenName": "Faculty",
+                    "sn": "User",
+                    "groups": ["faculty", "faculty_fte", "Domain Users"],
+                },
+                "student@acme.edu": {
+                    "mail": "student@mail.acme.edu",
+                    "givenName": "Student",
+                    "sn": "User",
+                    "groups": ["student", "Domain Users"],
+                },
+            }
 
     @property
     def SAML(self):
         return {
-            "entityid": f"{self.BASE_URL}/saml2",
+            "entityid": _("IDP_ENTITY_ID", f"{self.BASE_URL}/saml2"),
             "service": {
                 "idp": {
                     "sign_assertion": True,
                     "sign_response": True,
+                    "want_authn_requests_signed": _("WANT_AUTHN_REQUESTS_SIGNED", "0")
+                    == "1",
                     "encrypt_assertion": True,
                     "endpoints": {
                         "single_sign_on_service": [

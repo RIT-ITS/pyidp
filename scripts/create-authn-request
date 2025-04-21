@@ -4,7 +4,7 @@ set -euo pipefail
 
 AUTHN_XML=$(cat <<EOF
   <samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="$(cat /proc/sys/kernel/random/uuid)" IssueInstant="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" Version="2.0">
-    <saml:Issuer>https://dummy-sp.localhost/saml2</saml:Issuer>
+    <saml:Issuer>https://acme.edu/saml2/</saml:Issuer>
   </samlp:AuthnRequest>
 EOF
 )

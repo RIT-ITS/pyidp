@@ -8,8 +8,7 @@ set -euo pipefail
 HERE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 WORKSPACE="$(realpath "${HERE}/../../")"
 
-PEM_KEY="$(mktemp)"
-cat >"$PEM_KEY" <<EOL
+PEM_KEY=$(cat <<EOF
 -----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDglC0LJs8lRLLb
 HL524Fa4uaQexHriLvYXy9RVWEWLFjiXhleUkCLjk0Mav/LvVrf6WLNggi2JzoUR
@@ -38,10 +37,10 @@ PEkEpox51kiQNwaov/ngAUHfeFVKnpCE+Z4foHBUIklM+FJ6aQzsDTG1z6vqpsX+
 fP1nK+MGzoEmeaIRM8LIV7dv7EFp8YXA8w2+kd7F2v9ypVHJLmpyv98ypdNMl+ZS
 m5XUeSI0KUEc/DTYVZpU5C0f
 -----END PRIVATE KEY-----
-EOL
+EOF
+)
 
-PEM_CRT="$(mktemp)"
-cat >"$PEM_KEY" <<EOL
+PEM_CRT=$(cat <<EOF
 -----BEGIN CERTIFICATE-----
 MIIDCzCCAfOgAwIBAgIUGGzOZiUM1dj/185zDVg9dOlSIIQwDQYJKoZIhvcNAQEL
 BQAwFTETMBEGA1UEAwwKcHlpZHAudGVzdDAeFw0yNTA0MTkxNDEzMTVaFw0yNjA0
@@ -61,10 +60,10 @@ Ix1a5xYUpt45ZByEqvOBp3y4430gu/dwFsRLi6oAuUrKac2ik6+7vGzOqGivmlZG
 VYA5qmd0bf657HF19NxAVqJA0PnWvAuWJy960S0vKH1OtjINPtnXVPEJ4CKGxETV
 tt2Ynob2hp6hdmLL0JAN
 -----END CERTIFICATE-----
-EOL
+EOF
+)
 
-SP_METADATA="$(mktemp)"
-cat >"$SP_METADATA" <<EOL
+SP_METADATA=$(cat <<EOF
 <?xml version="1.0"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     entityID="https://dummy-sp.localhost/saml2">
@@ -83,7 +82,8 @@ cat >"$SP_METADATA" <<EOL
             index="1" />
     </md:SPSSODescriptor>
 </md:EntityDescriptor>
-EOL
+EOF
+)
 
 docker buildx build \
     --build-context "src=${WORKSPACE}/src/" \
@@ -98,11 +98,11 @@ docker network create --driver bridge pyidp_test || true
 docker run \
         --network pyidp_test \
         -eSECRET_KEY="secret-password" \
+        -eBASE_URL="http://localhost:8000" \
+        -eIDP_KEY="${PEM_KEY}" \
+        -eIDP_CRT="${PEM_CRT}" \
+        -eSP_METADATA="${SP_METADATA}" \
         -v"${WORKSPACE}/docker/pyidp/srv/www/entrypoint.sh:/srv/www/entrypoint.sh" \
-        -v"${PEM_KEY}:/etc/pyidp/idp.key" \
-        -v"${PEM_CRT}:/etc/pyidp/idp.crt" \
-        --entrypoint=/bin/sh \
         -p8000:80 \
-        -it $LAST_IMAGE
-
-#docker run -v"${CONFIG_FILE}:/srv/www/config.yml" -it -p8000:80 $LAST_IMAGE start_huey
+        -it $LAST_IMAGE \
+        "$@"

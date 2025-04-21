@@ -51,17 +51,10 @@ RUN python3 -m venv /srv/www/.venv && \
          --no-cache-dir \
          -c /opt/pyidp/requirements-frozen.txt \
          /opt/pyidp/pyidp-*.whl gunicorn==$GUNICORN_VERSION
- 
 
 # Overlay static configuration and runtime files
 COPY --from=dockerfiles --chown=pyidp /srv /srv/
 COPY --from=dockerfiles --chown=pyidp /etc /etc/
-
-#FROM scratch AS prod_flattened
-
-#COPY --from=prod / /
-
-
 
 ENTRYPOINT [ "/srv/www/entrypoint.sh" ]
 EXPOSE 80

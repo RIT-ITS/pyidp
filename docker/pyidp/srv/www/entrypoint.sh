@@ -4,9 +4,6 @@ set -euo pipefail
 HERE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 LOGLEVEL='DEBUG'
 
-IDP_CRT="/etc/pyidp/idp.crt"
-IDP_KEY="/etc/pyidp/idp.key"
-SP_METADATA="/etc/pyidp/sp.xml"
 PYTHON="/srv/www/.venv/bin/python"
 
 usage() {
@@ -54,21 +51,27 @@ function log_err {
 }
 
 runserver() {
-    [ -f "${IDP_CRT}" ] || {
-        log_err "Public key file ${IDP_CRT} not found and is required."
-        exit 1;
-    }
+    for var in SECRET_KEY IDP_KEY IDP_CRT SP_METADATA
+    do
+        [ -z "$var" ] && {
+            log_err "Variable ${var} is required but wasn't passed, please refer to documentation."
+            exit 1;
+        }
+    done
 
-    [ -f "${IDP_KEY}" ] || {
-        log_err "Private key file ${IDP_KEY} not found and is required."
-        exit 1;
-    }
+    log_info "Creating file /etc/pyidp/idp.key"
+    tee /etc/pyidp/idp.key <<< "${IDP_KEY}" 
+    log_info "File written"
 
-    [ -f "${SP_METADATA}" ] || {
-        log_err "Metadata file ${SP_METADATA} not found and is required."
-        exit 1;
-    }
+    log_info "Creating file /etc/pyidp/idp.crt"
+    tee /etc/pyidp/idp.crt <<< "${IDP_CRT}" 
+    log_info "File written" 
 
+    log_info "Creating file /etc/pyidp/sp.xml"
+    tee /etc/pyidp/sp.xml <<< "${SP_METADATA}" 
+    log_info "File written"
+    
+    log_info "Starting gunicorn server"
     /srv/www/.venv/bin/python /srv/www/.venv/bin/gunicorn -b 0.0.0.0:80 -c /srv/www/gunicorn.conf.py "pyidp.app:create_app()"
 }
 
