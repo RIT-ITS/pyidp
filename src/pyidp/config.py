@@ -40,7 +40,7 @@ class Config:
 
     @property
     def ATTR_CONVERSIONS(self):
-        return {"user": "uid", "groups": "ritEduMemberOfUid"}
+        return {"user": "uid"}
 
     @property
     def PROFILES(self):
@@ -50,12 +50,14 @@ class Config:
         else:
             return {
                 "admin@acme.edu": {
+                    "user": "admin@acme.edu",
                     "mail": "admin@mail.acme.edu",
                     "givenName": "Admin",
                     "sn": "User",
                     "groups": ["admin", "Domain Users"],
                 },
                 "staff@acme.edu": {
+                    "user": "staff@acme.edu",
                     "mail": "staff@mail.acme.edu",
                     "givenName": "Staff",
                     "sn": "User",
@@ -67,17 +69,20 @@ class Config:
                     ],
                 },
                 "faculty@acme.edu": {
+                    "user": "faculty@acme.edu",
                     "mail": "faculty@mail.acme.edu",
                     "givenName": "Faculty",
                     "sn": "User",
                     "groups": ["faculty", "faculty_fte", "Domain Users"],
                 },
                 "student@acme.edu": {
+                    "user": "student@acme.edu",
                     "mail": "student@mail.acme.edu",
                     "givenName": "Student",
                     "sn": "User",
                     "groups": ["student", "Domain Users"],
                 },
+                "transient@acme.edu": {"user": "transient@acme.edu"},
             }
 
     @property

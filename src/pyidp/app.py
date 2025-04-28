@@ -14,7 +14,7 @@ def create_app(config_object="pyidp.config.Config"):
     config: Config = import_string(config_object)()
 
     app.secret_key = config.SECRET_KEY
-    app.permanent_session_lifetime = timedelta(minutes=30)
+    app.permanent_session_lifetime = timedelta(days=1)
 
     configure_logging(config)
     app.config.from_object(config)

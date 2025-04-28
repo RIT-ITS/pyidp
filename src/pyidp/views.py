@@ -123,7 +123,7 @@ def authenticate():
     if not ticket:
         abort(400, "Missing ticket parameter in querystring")
 
-    token = request.form.get("token")
+    token = request.form.get("password")
     error = False
     if token:
         if token.strip() == current_app.config["SECRET_KEY"].strip():
@@ -154,9 +154,7 @@ def choose_profile():
     profile_src = {}
     chosenProfileKey = request.form.get("chosenProfile")
     if chosenProfileKey:
-        profile_src = {"user": chosenProfileKey} | current_app.config["PROFILES"].get(
-            chosenProfileKey
-        )
+        profile_src = current_app.config["PROFILES"].get(chosenProfileKey)
     else:
         for key in ["user", "mail", "givenName", "sn"]:
             profile_src[key] = request.form.get(key)
